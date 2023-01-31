@@ -1,12 +1,44 @@
-import { RecipeItem } from "../RecipeItem";
-import { List, Card } from "./RecipeList.styled";
+import { Component } from 'react';
+import { RecipeItem } from '../RecipeItem';
+import { List } from './RecipeList.styled';
 
-export const RecipeList = ({ recipeItems }) => {
-  return (
-    <List>
-      {/* <Card>юхуу</Card> */}
-      {recipeItems.map(item => <RecipeItem key={item.id} data={item} />)}
-    </List>
-    
-  )
+export class RecipeList extends Component {
+  state = {
+    activeRecipeItem: null,
+  };
+
+  changeActiveItem = (index) => {
+    this.setState(({ activeRecipeItem }) => {
+      return {
+        activeRecipeItem: activeRecipeItem === index ? null : index,
+      };
+    });
+  };
+
+  render() {
+    return (
+      <List>
+        {this.props.recipeItems.map((item, i) => (
+          <RecipeItem
+            key={item.id}
+            data={item}
+            isActive={this.state.activeRecipeItem === i}
+            activeStateHandler={() => {
+              this.changeActiveItem(i);
+            }}
+          />
+        ))}
+      </List>
+    );
+  }
 }
+
+// export const RecipeList = ({ recipeItems }) => {
+// return (
+//   <List>
+//     {recipeItems.map((item) => (
+//       <RecipeItem key={item.id} data={item} />
+//     ))}
+//   </List>
+// );
+// };
