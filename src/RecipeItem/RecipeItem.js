@@ -15,6 +15,17 @@ import {
 } from './RecipeItem.styled';
 
 export class RecipeItem extends Component {
+  handleIncrement = (event) => {
+    console.log('Increment button');
+
+    // const target = event.target;
+    // можна не створювати цю змінну?
+
+    setTimeout(() => {
+      console.log(event.target);
+    }, 1000);
+  };
+
   render() {
     const { name, image, servings, calories, time, difficulty } =
       this.props.data;
@@ -30,10 +41,10 @@ export class RecipeItem extends Component {
         <CardSpecs>
           <SpecsItem>
             <HiOutlineChartPie />
-            {servings}servings
+            {servings}servings{this.props.index}
           </SpecsItem>
 
-          <SpecsItem>
+          <SpecsItem onClick={this.handleIncrement}>
             <HiOutlineChartBar />
             {calories} calories
           </SpecsItem>
@@ -44,7 +55,7 @@ export class RecipeItem extends Component {
           </SpecsItem>
         </CardSpecs>
 
-        {this.props.isActive && (
+        {this.props.isActive ? (
           <div>
             <BadgeList>
               <BadgeListLabel>Difficulty</BadgeListLabel>
@@ -62,6 +73,8 @@ export class RecipeItem extends Component {
               </Badge>
             </BadgeList>
           </div>
+        ) : (
+          this.props.children
         )}
       </Card>
     );
