@@ -27,11 +27,18 @@ export class RecipeItem extends Component {
   };
 
   render() {
-    const { name, image, servings, calories, time, difficulty } =
+    const { id, name, image, servings, calories, time, difficulty } =
       this.props.data;
 
     return (
       <Card>
+        <button
+          onClick={() => {
+            this.props.removeHandler(id);
+          }}
+        >
+          Видалити
+        </button>
         <CardTitle>{name}</CardTitle>
         <CardImage
           src={image}

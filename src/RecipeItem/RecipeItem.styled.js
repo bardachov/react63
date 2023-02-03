@@ -3,6 +3,8 @@ import styled from 'styled-components';
 export const Card = styled.article`
   width: 320px;
   padding: 0px 10px;
+  margin-top: 10px;
+  border: 1px solid black;
 `;
 
 export const CardTitle = styled.h2`
@@ -19,14 +21,13 @@ export const CardImage = styled.img`
 export const CardSpecs = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 export const SpecsItem = styled.span`
-  padding: 15px 0px;  
+  padding: 15px 0px;
   font-size: 16px;
   display: flex;
   align-items: center;
-  
 
   svg {
     color: orangered;
@@ -40,31 +41,33 @@ export const BadgeList = styled.div`
   flex-wrap: wrap;
   margin-top: 10px;
   gap: 5px;
-`
+`;
 
 export const BadgeListLabel = styled.b`
   width: 100%;
   text-align: left;
   margin-bottom: 10px;
-`
+`;
 
 export const Badge = styled.span`
   border-radius: 4px;
   padding: 8px 16px;
-  background-color: ${({isActive, value}) => {
-    
+  background-color: ${({ isActive, value }) => {
     if (isActive) {
-      
-      switch(value) {
-        case 'easy': return 'green';
-        case 'medium': return 'blue';
-        case 'hard': return 'red';
-        default: return 'lightgray'
+      switch (value) {
+        case 'easy':
+          return 'green';
+        case 'medium':
+          return 'blue';
+        case 'hard':
+          return 'red';
+        default:
+          return 'lightgray';
       }
     } else {
-      return 'lightgray'
+      return 'lightgray';
     }
-    
+
     // switch(value) {
     //   case 'easy': {
     //     return isActive ? 'green' : 'lightgray';
@@ -84,6 +87,5 @@ export const Badge = styled.span`
     // }
   }};
 
-  color: ${({isActive}) => isActive ? 'white' : 'black'}
-
-`
+  color: ${({ isActive }) => (isActive ? 'white' : 'black')};
+`;
