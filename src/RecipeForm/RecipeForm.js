@@ -1,3 +1,12 @@
+import {
+  TextField,
+  Select,
+  Button,
+  MenuItem,
+  Typography,
+} from '@mui/material';
+import { Box, Stack } from '@mui/system';
+
 export const RecipeForm = ({
   onSubmitHandler,
   onChangeHandler,
@@ -5,35 +14,72 @@ export const RecipeForm = ({
 }) => {
   return (
     <form onSubmit={onSubmitHandler}>
-      <fieldset>
-        <label htmlFor="recipeName">Назва страви</label>
-        <input
-          type="text"
+      <Typography variant="h3" sx={{ mb: 2 }}>
+        Add Recipe
+      </Typography>
+
+      <Box sx={{ mb: 2 }}>
+        <TextField
           id="recipeName"
+          label="Recipe Name"
           name="name"
           onChange={onChangeHandler}
           value={nameVal}
+          size="small"
+          sx={{ mr: 3 }}
         />
-      </fieldset>
+        <TextField
+          id="recipeImg"
+          label="Image url"
+          name="image"
+          size="small"
+        />
+      </Box>
+      <Stack direction="row" justifyContent="center">
+        <TextField
+          label="calories"
+          name="calories"
+          size="small"
+          type="number"
+          sx={{ width: 100, mr: 1 }}
+        />
 
-      <fieldset>
-        <label htmlFor="recipeImg">Фото страви(url)</label>
-        <input type="text" id="recipeImg" name="image" />
-      </fieldset>
+        <TextField
+          label="servings"
+          name="servings"
+          size="small"
+          type="number"
+          sx={{ width: 100, mr: 1 }}
+        />
 
-      <fieldset>
-        <input type="number" name="calories" placeholder="calories" />
-        <input type="number" name="servings" placeholder="servings" />
-        <input type="number" name="time" placeholder="minutes" />
-      </fieldset>
+        <TextField
+          label="time"
+          name="time"
+          size="small"
+          type="number"
+          sx={{ width: 100, mr: 1 }}
+        />
 
-      <select name="difficulty">
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-      </select>
-
-      <button>Submit</button>
+        <Select
+          name="difficulty"
+          label="difficulty"
+          value={'easy'}
+          size="small"
+          sx={{ width: 150 }}
+        >
+          <MenuItem value="easy">Easy</MenuItem>
+          <MenuItem value="medium">Medium</MenuItem>
+          <MenuItem value="hard">Hard</MenuItem>
+        </Select>
+      </Stack>
+      <Button
+        sx={{ mt: 5 }}
+        size="large"
+        variant="contained"
+        type="submit"
+      >
+        Submit
+      </Button>
     </form>
   );
 };

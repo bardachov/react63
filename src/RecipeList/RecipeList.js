@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { RecipeItem } from '../RecipeItem';
 import { RecipeForm } from '../RecipeForm';
+import { Modal } from '../Modal';
 import { List } from './RecipeList.styled';
 import { v4 as uuidv4 } from 'uuid';
 export class RecipeList extends Component {
@@ -27,20 +28,6 @@ export class RecipeList extends Component {
     );
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  // console.log(nextState);
-  // console.log(this.state);
-  // console.log(this.state, nextState);
-  // if (
-  //   this.state.list.length !== nextState.list.length
-  //   // this.state.list.length > 0
-  // ) {
-  //   return true;
-  // }
-
-  // return false;
-  // }
-
   changeActiveItem = (index) => {
     this.setState(({ activeRecipeItem }) => {
       return {
@@ -50,13 +37,13 @@ export class RecipeList extends Component {
   };
 
   showFormHandler = (event) => {
-    console.log(event.target);
     this.setState({
       isFormVisible: !this.state.isFormVisible,
     });
   };
 
   submitHandler = (event) => {
+    console.log('submit');
     event.preventDefault();
 
     const { name, image, calories, servings, time, difficulty } =
@@ -77,6 +64,7 @@ export class RecipeList extends Component {
 
       return {
         list: [...list, newRecipeItem],
+        isFormVisible: false,
       };
     });
   };
@@ -97,7 +85,6 @@ export class RecipeList extends Component {
   };
 
   render() {
-    console.log('rendered');
     return (
       <>
         <button
@@ -108,11 +95,13 @@ export class RecipeList extends Component {
         </button>
 
         {this.state.isFormVisible && (
-          <RecipeForm
-            onSubmitHandler={this.submitHandler}
-            onChangeHandler={this.changeHandler}
-            nameVal={this.state.nameVal}
-          />
+          <Modal>
+            <RecipeForm
+              onSubmitHandler={this.submitHandler}
+              onChangeHandler={this.changeHandler}
+              nameVal={this.state.nameVal}
+            />
+          </Modal>
         )}
 
         <List>
