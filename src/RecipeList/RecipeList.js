@@ -36,9 +36,9 @@ export class RecipeList extends Component {
     });
   };
 
-  showFormHandler = (event) => {
+  toggleForm = (value) => {
     this.setState({
-      isFormVisible: !this.state.isFormVisible,
+      isFormVisible: value,
     });
   };
 
@@ -78,7 +78,6 @@ export class RecipeList extends Component {
   };
 
   changeHandler = (event) => {
-    console.log(event);
     this.setState({
       nameVal: event.target.value,
     });
@@ -88,14 +87,16 @@ export class RecipeList extends Component {
     return (
       <>
         <button
-          onClick={this.showFormHandler}
+          onClick={() => {
+            this.toggleForm(true);
+          }}
           style={{ marginTop: 20 }}
         >
           Toggle Recipe Form
         </button>
 
         {this.state.isFormVisible && (
-          <Modal>
+          <Modal togleHandler={this.toggleForm}>
             <RecipeForm
               onSubmitHandler={this.submitHandler}
               onChangeHandler={this.changeHandler}
