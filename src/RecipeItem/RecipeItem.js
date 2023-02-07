@@ -48,7 +48,7 @@ export class RecipeItem extends Component {
         <CardSpecs>
           <SpecsItem>
             <HiOutlineChartPie />
-            {servings}servings{this.props.index}
+            {servings}servings
           </SpecsItem>
 
           <SpecsItem onClick={this.handleIncrement}>
@@ -90,7 +90,7 @@ export class RecipeItem extends Component {
 
 RecipeItem.propTypes = {
   data: PropTypes.exact({
-    id: PropTypes.number,
+    id: PropTypes.string,
     name: PropTypes.string.isRequired,
     time: PropTypes.string.isRequired,
     servings: PropTypes.number.isRequired,
