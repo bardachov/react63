@@ -3,17 +3,32 @@ import { RecipeItem } from '../RecipeItem';
 import { RecipeForm } from '../RecipeForm';
 import { Modal } from '../Modal';
 import { List } from './RecipeList.styled';
+
+import { getMenuList } from '../api';
 import { v4 as uuidv4 } from 'uuid';
+import { Button, MenuItem, Select } from '@mui/material';
+import { Stack } from '@mui/system';
+
 export class RecipeList extends Component {
   state = {
     activeRecipeItem: null,
     list: [],
+    menuList: [],
+    selectedMenuId: '',
     isFormVisible: false,
     nameVal: '',
+    errorMessage: '',
   };
 
   componentDidMount() {
-    // console.log('did mount');
+    getMenuList()
+      .then(({ data }) => {
+        this.setState({ menuList: data, errorMessage: '' });
+      })
+      .catch((error) => {
+        this.setState({ errorMessage: error.message });
+      });
+
     this.setState({
       list: JSON.parse(localStorage.getItem('recipelist')),
     });
@@ -83,17 +98,49 @@ export class RecipeList extends Component {
     });
   };
 
+  onSelectMenu = (event) => {
+    this.setState({
+      selectedMenuId: event.target.value,
+    });
+
+    // localStorage.setItem('activeMenu', event.target.value);
+  };
+
   render() {
+    const { menuList, selectedMenuId } = this.state;
+
     return (
       <>
-        <button
-          onClick={() => {
-            this.toggleForm(true);
-          }}
-          style={{ marginTop: 20 }}
+        <Stack
+          sx={{ mt: 3, mb: 2 }}
+          direction="row"
+          justifyContent="center"
         >
-          Toggle Recipe Form
-        </button>
+          <Select
+            sx={{ width: 300 }}
+            value={selectedMenuId}
+            onChange={this.onSelectMenu}
+            size="small"
+          >
+            {menuList.map((item) => {
+              return (
+                <MenuItem key={item.id} value={item.id}>
+                  {item.name}
+                </MenuItem>
+              );
+            })}
+          </Select>
+
+          <Button
+            onClick={() => {
+              this.toggleForm(true);
+            }}
+            sx={{ ml: 2 }}
+            variant="contained"
+          >
+            Toggle Recipe Form
+          </Button>
+        </Stack>
 
         {this.state.isFormVisible && (
           <Modal togleHandler={this.toggleForm}>
