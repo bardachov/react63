@@ -3,11 +3,12 @@ import { RecipeItem } from '../RecipeItem';
 import { RecipeForm } from '../RecipeForm';
 import { Modal } from '../Modal';
 import { List } from './RecipeList.styled';
-
-import { getMenuList } from '../api';
+import ContentLoader from 'react-content-loader';
+import { getMenuList, getMenuProducts } from '../api';
 import { v4 as uuidv4 } from 'uuid';
 import { Button, MenuItem, Select } from '@mui/material';
-import { Stack } from '@mui/system';
+// import { Stack } from '@mui/system';
+const { Stack } = require('@mui/system');
 
 export class RecipeList extends Component {
   state = {
@@ -15,9 +16,11 @@ export class RecipeList extends Component {
     list: [],
     menuList: [],
     selectedMenuId: '',
+    menuProducts: [],
     isFormVisible: false,
     nameVal: '',
     errorMessage: '',
+    loading: false,
   };
 
   componentDidMount() {
@@ -58,7 +61,7 @@ export class RecipeList extends Component {
   };
 
   submitHandler = (event) => {
-    console.log('submit');
+    // console.log('submit');
     event.preventDefault();
 
     const { name, image, calories, servings, time, difficulty } =
@@ -101,13 +104,56 @@ export class RecipeList extends Component {
   onSelectMenu = (event) => {
     this.setState({
       selectedMenuId: event.target.value,
+      loading: true,
     });
 
-    // localStorage.setItem('activeMenu', event.target.value);
+    getMenuProducts(event.target.value)
+      .then(({ data }) => {
+        this.setState({
+          menuProducts: data,
+          errorMessage: '',
+        });
+      })
+      .catch((error) => {
+        this.setState({ errorMessage: error.message });
+      })
+      .finally(() => {
+        this.setState({
+          loading: false,
+        });
+      });
   };
 
+  NoProducts = () => {
+    return this.state.selectedMenuId ? (
+      <h3>Нема товарів</h3>
+    ) : (
+      <h3>виберіть меню</h3>
+    );
+  };
+
+  MyLoader = () => (
+    <ContentLoader
+      speed={2}
+      width={500}
+      height={450}
+      viewBox="0 0 500 450"
+      backgroundColor="#f3f3f3"
+      foregroundColor="#ecebeb"
+    >
+      <rect x="89" y="17" rx="0" ry="0" width="131" height="0" />
+      <rect x="9" y="41" rx="0" ry="0" width="241" height="203" />
+      <rect x="14" y="5" rx="0" ry="0" width="233" height="21" />
+      <rect x="12" y="256" rx="0" ry="0" width="77" height="19" />
+      <rect x="107" y="259" rx="0" ry="0" width="69" height="17" />
+      <rect x="198" y="260" rx="0" ry="0" width="50" height="16" />
+      <rect x="16" y="286" rx="0" ry="0" width="230" height="28" />
+      <rect x="19" y="326" rx="0" ry="0" width="229" height="67" />
+    </ContentLoader>
+  );
+
   render() {
-    const { menuList, selectedMenuId } = this.state;
+    const { menuList, selectedMenuId, menuProducts } = this.state;
 
     return (
       <>
@@ -152,20 +198,32 @@ export class RecipeList extends Component {
           </Modal>
         )}
 
-        <List>
-          {this.state.list.map((item, i) => (
-            <RecipeItem
-              key={item.id}
-              data={item}
-              index={i} //передача індекса
-              isActive={this.state.activeRecipeItem === i}
-              activeStateHandler={() => {
-                this.changeActiveItem(i);
-              }}
-              removeHandler={this.removeRecipeItem}
-            />
-          ))}
-        </List>
+        {this.state.loading ? (
+          <Stack direction="row" flexWrap="row-wrap">
+            <this.MyLoader />
+            <this.MyLoader />
+            <this.MyLoader />
+          </Stack>
+        ) : (
+          <List style={{ marginBottom: 50 }}>
+            {menuProducts.length ? (
+              menuProducts.map((item, i) => (
+                <RecipeItem
+                  key={item.id}
+                  data={item}
+                  index={i} //передача індекса
+                  isActive={this.state.activeRecipeItem === i}
+                  activeStateHandler={() => {
+                    this.changeActiveItem(i);
+                  }}
+                  removeHandler={this.removeRecipeItem}
+                />
+              ))
+            ) : (
+              <this.NoProducts />
+            )}
+          </List>
+        )}
       </>
     );
   }

@@ -7,6 +7,6 @@ const request = axios.create({
 export const getMenuList = async () => await request.get();
 
 export const getMenuProducts = async (menuId) => {
-  const result = await request.get(`/:${menuId}/products`);
-  console.log(result);
+  const result = await request.get(`/${menuId}/products`);
+  return result;
 };

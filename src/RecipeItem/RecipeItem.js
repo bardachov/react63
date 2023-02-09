@@ -27,8 +27,17 @@ export class RecipeItem extends Component {
   };
 
   render() {
-    const { id, name, image, servings, calories, time, difficulty } =
-      this.props.data;
+    const {
+      id,
+      name,
+      image,
+      offerCount,
+      description,
+      price,
+      calories,
+      time,
+      difficulty,
+    } = this.props.data;
 
     return (
       <Card>
@@ -43,59 +52,53 @@ export class RecipeItem extends Component {
         <CardImage
           src={image}
           alt={name}
-          onClick={this.props.activeStateHandler}
+          // onClick={this.props.activeStateHandler}
         />
         <CardSpecs>
           <SpecsItem>
             <HiOutlineChartPie />
-            {servings}servings
+            {offerCount} servings
           </SpecsItem>
 
           <SpecsItem onClick={this.handleIncrement}>
             <HiOutlineChartBar />
-            {calories} calories
+            {price} price
           </SpecsItem>
 
           <SpecsItem>
             <BsAlarm />
-            {time} mins
+            {time} N/A
           </SpecsItem>
         </CardSpecs>
 
-        {this.props.isActive ? (
-          <div>
-            <BadgeList>
-              <BadgeListLabel>Difficulty</BadgeListLabel>
-              <Badge value="easy" isActive={difficulty === 'easy'}>
-                Easy
-              </Badge>
-              <Badge
-                value="medium"
-                isActive={difficulty === 'medium'}
-              >
-                Medium
-              </Badge>
-              <Badge value="hard" isActive={difficulty === 'hard'}>
-                Hard
-              </Badge>
-            </BadgeList>
-          </div>
-        ) : (
-          this.props.children
-        )}
+        <div>
+          <BadgeList>
+            <BadgeListLabel>Description</BadgeListLabel>
+            <p>{description}</p>
+            {/* <Badge value="easy" isActive={difficulty === 'easy'}>
+              Easy
+            </Badge>
+            <Badge value="medium" isActive={difficulty === 'medium'}>
+              Medium
+            </Badge>
+            <Badge value="hard" isActive={difficulty === 'hard'}>
+              Hard
+            </Badge> */}
+          </BadgeList>
+        </div>
       </Card>
     );
   }
 }
 
-RecipeItem.propTypes = {
-  data: PropTypes.exact({
-    id: PropTypes.string,
-    name: PropTypes.string.isRequired,
-    time: PropTypes.string.isRequired,
-    servings: PropTypes.number.isRequired,
-    calories: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    difficulty: PropTypes.oneOf(['easy', 'medium', 'hard']),
-  }).isRequired,
-};
+// RecipeItem.propTypes = {
+//   data: PropTypes.exact({
+//     id: PropTypes.string,
+//     name: PropTypes.string.isRequired,
+//     time: PropTypes.string.isRequired,
+//     servings: PropTypes.number.isRequired,
+//     calories: PropTypes.number.isRequired,
+//     image: PropTypes.string.isRequired,
+//     difficulty: PropTypes.oneOf(['easy', 'medium', 'hard']),
+//   }).isRequired,
+// };
