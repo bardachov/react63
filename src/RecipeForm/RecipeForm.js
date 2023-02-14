@@ -1,17 +1,75 @@
+import { useEffect, useState } from 'react';
+
 import {
   TextField,
   Select,
   Button,
   MenuItem,
   Typography,
+  TextareaAutosize,
 } from '@mui/material';
+
 import { Box, Stack } from '@mui/system';
 
-export const RecipeForm = ({
-  onSubmitHandler,
-  onChangeHandler,
-  nameVal,
-}) => {
+const useForm = (prop) => {
+  const [propName, setPropName] = useState();
+
+  const changeHandler = (e) => {
+    setPropName(e.target.value);
+    localStorage.setItem(prop, e.target.value);
+  };
+
+  useEffect(() => {
+    const value = localStorage.getItem(prop);
+    if (value) setPropName(value);
+  }, []);
+
+  return [propName, changeHandler];
+};
+
+export const RecipeForm = ({ onSubmitHandler }) => {
+  const [name, nameChangeHandler] = useForm('name');
+  const [imgUrl, imgUrlChangeHandler] = useForm('imgUrl');
+  const [description, descriptionChangeHandler] =
+    useForm('description');
+  const [calories, caloriesChangeHandler] = useForm('calories');
+  const [servings, servingsChangeHandler] = useForm('servings');
+  const [time, timeChangeHandler] = useForm('time');
+
+  const [counter, setCounter] = useState(0);
+  const [counter1, setCounter1] = useState(0);
+
+  useEffect(() => {
+    const keyDownHandler = (event) => {
+      console.log(event.code);
+    };
+
+    window.addEventListener('keydown', keyDownHandler);
+
+    return () => {
+      window.removeEventListener('keydown', keyDownHandler);
+    };
+  }, []);
+
+  // кожного разу коли міняється name
+  useEffect(() => {
+    setCounter(1);
+    setCounter1(1);
+  }, []);
+
+  useEffect(() => {
+    console.log('counter has changed', counter);
+  }, [counter]);
+
+  useEffect(() => {
+    console.log('counter1 has changed', counter1);
+  }, [counter1]);
+
+  // кожного разу коли міняється стейт і пропс
+  useEffect(() => {
+    console.log('Hey, I am here');
+  });
+
   return (
     <form onSubmit={onSubmitHandler}>
       <Typography variant="h3" sx={{ mb: 2 }}>
@@ -23,8 +81,8 @@ export const RecipeForm = ({
           id="recipeName"
           label="Recipe Name"
           name="name"
-          onChange={onChangeHandler}
-          value={nameVal}
+          onChange={nameChangeHandler}
+          value={name}
           size="small"
           sx={{ mr: 3 }}
         />
@@ -33,6 +91,8 @@ export const RecipeForm = ({
           label="Image url"
           name="image"
           size="small"
+          onChange={imgUrlChangeHandler}
+          value={imgUrl}
         />
       </Box>
       <Stack direction="row" justifyContent="center">
@@ -41,6 +101,8 @@ export const RecipeForm = ({
           name="calories"
           size="small"
           type="number"
+          onChange={caloriesChangeHandler}
+          value={calories}
           sx={{ width: 100, mr: 1 }}
         />
 
@@ -49,6 +111,8 @@ export const RecipeForm = ({
           name="servings"
           size="small"
           type="number"
+          onChange={servingsChangeHandler}
+          value={servings}
           sx={{ width: 100, mr: 1 }}
         />
 
@@ -57,10 +121,16 @@ export const RecipeForm = ({
           name="time"
           size="small"
           type="number"
+          onChange={timeChangeHandler}
+          value={time}
           sx={{ width: 100, mr: 1 }}
         />
-
-        <Select
+        <TextareaAutosize
+          name="description"
+          onChange={descriptionChangeHandler}
+          value={description}
+        />
+        {/* <Select
           name="difficulty"
           label="difficulty"
           value={'easy'}
@@ -70,7 +140,7 @@ export const RecipeForm = ({
           <MenuItem value="easy">Easy</MenuItem>
           <MenuItem value="medium">Medium</MenuItem>
           <MenuItem value="hard">Hard</MenuItem>
-        </Select>
+        </Select> */}
       </Stack>
       <Button
         sx={{ mt: 5 }}
@@ -83,3 +153,7 @@ export const RecipeForm = ({
     </form>
   );
 };
+
+export default function Hi() {
+  console.log('hi');
+}
