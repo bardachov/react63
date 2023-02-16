@@ -1,9 +1,20 @@
-# GoIt React63 Task lesson 7
+# GoIt React63 
+# Lesson 7
  - Зробити так щоб дані форми товара зберігалися в стейті
  - Зробити так щоб, форма заповнювалась автоматом зі стейта
   - для цього дані зберігатимемо в локалсторідж.
 - Написати апі відправки форми 
 
+# Lesson 8
+ - useRef
+ - useMemo
+ - useCallback
+ - useContext
+
+ https://dmitripavlutin.com/react-useref-guide/
+ https://dmitripavlutin.com/react-usecallback/
+ https://dmitripavlutin.com/react-usememo-hook/
+ https://dmitripavlutin.com/react-context-and-usecontext/
 
 
 # Getting Started with Create React App
